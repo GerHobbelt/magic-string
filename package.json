@@ -10,7 +10,7 @@
   "typings": "index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "sourcemap-codec": "^1.4.4"
+    "sourcemap-codec": "https://github.com/joshuafcole/sourcemap-codec/releases/download/1.4.3-include-sourcemaps/sourcemap-codec-1.4.3.tgz"
   },
   "devDependencies": {
     "buble": "^0.19.6",
