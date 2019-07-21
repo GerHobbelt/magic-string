@@ -2,14 +2,15 @@
   "name": "@gerhobbelt/magic-string",
   "description": "Modify strings, generate sourcemaps",
   "author": "Rich Harris",
-  "version": "0.20.0-1",
+  "version": "0.23.2-1",
   "repository": "https://github.com/rich-harris/magic-string",
   "main": "dist/magic-string.cjs.js",
   "module": "dist/magic-string.es.js",
   "jsnext:main": "dist/magic-string.es.js",
+  "typings": "index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "vlq": "1.0.1"
+    "sourcemap-codec": "^1.4.1"
   },
   "devDependencies": {
     "@gerhobbelt/source-map": "0.8.0-11",
@@ -19,6 +20,7 @@
     "eslint": "6.1.0",
     "istanbul": "0.4.5",
     "mocha": "6.2.0",
+    "prettier": "1.11.1",
     "remap-istanbul": "0.13.0",
     "resolve": "1.11.1",
     "rollup": "1.17.0",
@@ -36,26 +38,21 @@
   ],
   "scripts": {
     "test": "mocha",
-    "pretest": "npm run build:cjs",
-    "pretest-coverage": "npm run build:cjs",
+    "pretest": "npm run lint && npm run build",
+    "format": "prettier --single-quote --print-width 100 --use-tabs --write src/*.js src/**/*.js",
+    "pretest-coverage": "npm run build",
     "test-coverage": "rm -rf coverage/* && istanbul cover --report json node_modules/.bin/_mocha -- -u exports -R spec test/*.js",
     "posttest-coverage": "remap-istanbul -i coverage/coverage-final.json -o coverage/coverage-remapped.json -b dist && remap-istanbul -i coverage/coverage-final.json -o coverage/coverage-remapped.lcov -t lcovonly -b dist && remap-istanbul -i coverage/coverage-final.json -o coverage/coverage-remapped -t html -b dist",
     "ci": "npm run test-coverage && codecov < coverage/coverage-remapped.lcov",
-    "build:cjs": "rollup -c",
-    "build:es": "rollup -c --environment ES",
-    "build:umd": "rollup -c --environment DEPS",
-    "build": " npm run build:cjs && npm run build:es && npm run build:umd",
+    "build": "rollup -c",
     "prep": "rm -rf dist && npm test && npm run lint",
     "lint": "eslint src test",
-    "watch:cjs": "rollup -w -c",
-    "watch:es": "rollup -w -c --environment ES",
-    "watch:umd": "rollup -w -c --environment DEPS",
-    "watch": "npm run watch:es",
+    "watch": "rollup -cw",
     "pub": "npm publish --access public"
   },
   "files": [
-    "src/*",
     "dist/*",
+    "index.d.ts",
     "README.md"
   ]
 }

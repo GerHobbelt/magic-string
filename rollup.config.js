@@ -1,24 +1,50 @@
 import buble from 'rollup-plugin-buble';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import resolve from 'rollup-plugin-node-resolve';
 import replace from 'rollup-plugin-replace';
 
-var external = process.env.DEPS ? null : [ 'vlq' ];
-var format = process.env.DEPS ? 'umd' : process.env.ES ? 'es' : 'cjs';
+const plugins = [
+	buble({ exclude: 'node_modules/**' }),
+	resolve(),
+	replace({ DEBUG: false })
+];
 
-export default {
-	input: process.env.ES ? 'src/index.js' : 'src/index-legacy.js',
-	output: {
-		file: 'dist/magic-string.' + format + '.js',
-		format: format,
-		sourcemap: true,
-		name: "MagicString",
+export default [
+	/* esm */
+	{
+		input: 'src/index.js',
+		external: ['sourcemap-codec'],
+		plugins,
+		output: {
+			file: 'dist/magic-string.es.js',
+			format: 'es',
+			exports: 'named',
+			sourcemap: true
+		}
 	},
-	//exports: process.env.ES ? 'named' : 'default',
-	plugins: [
-		buble({ exclude: 'node_modules/**' }),
-		nodeResolve({ /* jsnext: true, skip: external */ }),
-		replace({ DEBUG: false })
-	],
-	//moduleName: 'MagicString',
-	external: external,
-};
+
+	/* cjs */
+	{
+		input: 'src/index-legacy.js',
+		external: ['sourcemap-codec'],
+		plugins,
+		output: {
+			file: 'dist/magic-string.cjs.js',
+			format: 'cjs',
+			exports: 'default',
+			sourcemap: true
+		}
+	},
+
+	/* umd */
+	{
+		input: 'src/index-legacy.js',
+		plugins,
+		output: {
+			file: 'dist/magic-string.umd.js',
+			format: 'umd',
+			exports: 'default',
+			name: 'MagicString',
+			sourcemap: true
+		}
+	}
+];
