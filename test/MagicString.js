@@ -1162,6 +1162,12 @@ describe( 'MagicString', () => {
 			const s = new MagicString( '  abcdefghijkl  ' );
 			assert.strictEqual( s.trim(), s );
 		});
+
+		it( 'should support trimming chunks with intro and outro', () => {
+			const s = new MagicString( '    \n' );
+			s.appendRight(4, 'test');
+			assert.strictEqual( s.trim().toString(), 'test' );
+		});
 	});
 
 	describe( 'trimLines', () => {
@@ -1189,6 +1195,25 @@ describe( 'MagicString', () => {
 			s.remove( 15, 16 );
 
 			assert.equal( s.isEmpty(), true );
+		});
+	});
+
+	describe( 'length', () => {
+		it( 'should support length', () => {
+			const s = new MagicString( ' abcde   fghijkl ' );
+
+			assert.equal( s.length(), 17 );
+
+			s.prepend( '  ' );
+			s.append( '  ' );
+			s.remove( 1, 6 );
+			s.remove( 9, 15 );
+
+			assert.equal( s.length(), 6 );
+
+			s.remove( 15, 16 );
+
+			assert.equal( s.length(), 5 );
 		});
 	});
 
