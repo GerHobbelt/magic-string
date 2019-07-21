@@ -25,7 +25,7 @@ class IntegrityCheckingMagicString extends MagicString {
 }
 
 for (const key in MagicString.prototype) {
-	if (!MagicString.prototype.hasOwnProperty(key)) {
+	if (!Object.prototype.hasOwnProperty.call(MagicString, key)) {
 		continue;
 	}
 	const func = MagicString.prototype[key];
