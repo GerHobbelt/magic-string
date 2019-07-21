@@ -3,7 +3,6 @@ const SourceMapConsumer = require( '@gerhobbelt/source-map' ).SourceMapConsumerS
 const MagicString = require( '../' );
 
 require( 'source-map-support' ).install();
-require( 'console-group' ).install();
 
 describe( 'MagicString.Bundle', () => {
 	describe( 'addSource', () => {
